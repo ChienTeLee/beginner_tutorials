@@ -2,9 +2,11 @@
 This repository is a simple ROS package created following ROS wiki tutorials. This project walks through:
 - creating and building a beginner tutorial package
 - writing a simple publisher (talker)
-- writing a simple subscriber (subscriber)
+- writing a simple subscriber (listener)
 
-The publisher node keep publishing a custom string message on a topic. The subscriber keeps printing out the received message throgh the topic.
+The publisher node keeps publishing a custom string message on a topic. The subscriber keeps printing out the received message through the topic.
+
+ROS wiki tutorials: http://wiki.ros.org/ROS/Tutorials
 
 ## Licence
 - BSD 3-clause Liscense
@@ -38,7 +40,7 @@ IN THE SOFTWARE.
 
 ## Standard install via command-line
 - create catkin workspace
-- clone package into catkin workspace
+- clone beginner tutorial package into catkin workspace
 - build catkin workspace
 ```
 $ mkdir -p ~/catkin_ws/src
