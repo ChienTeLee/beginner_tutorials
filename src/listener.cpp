@@ -37,8 +37,14 @@ int main(int argc, char **argv) {
   ros::NodeHandle n;
 
 
-  ros::Subscriber sub = n.subscribe("chatter", 1000, chatterCallback);
+  ros::Subscriber listener_sub = n.subscribe("chatter", 1000, chatterCallback);
 
+  if (listener_sub) {
+    ROS_INFO_STREAM("listener subscribing correctly");
+  } else {
+    ROS_FATAL_STREAM("listener not subscribing correctly");
+    return 1;
+  }
 
   ros::spin();
 

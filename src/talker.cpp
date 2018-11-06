@@ -23,6 +23,7 @@
  */
 
 #include <sstream>
+#include <string>
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "beginner_tutorials/pubNewLine.h"
@@ -45,14 +46,42 @@ int main(int argc, char **argv) {
   
   ros::init(argc, argv, "talker");
 
-
   ros::NodeHandle n;
+
   ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
+  if (chatter_pub) {
+    ROS_INFO_STREAM("chatter publishing correctly");
+  } else {
+    ROS_FATAL_STREAM("chatter not publishing correctly");
+    return 1;
+  }
+
 
   ros::ServiceServer service = n.advertiseService("pub_New_Line", pubNewLine);
+  if (service) {
+    ROS_INFO_STREAM("service working correctly");
+  } else {
+    ROS_FATAL_STREAM("service not working correctly");
+    return 1;
+  }
 
 
-  ros::Rate loop_rate(10);
+  double pubFreq = 10.0;
+  if (argc == 2) {
+    pubFreq = std::stod(argv[1]);
+  }
+  else if (argc > 2){
+    ROS_WARN_STREAM("too much argument number, change freq to 10 Hz");
+    pubFreq = 10.0;
+  }
+
+  if (pubFreq <= 0.0) {
+    ROS_ERROR_STREAM("freq <= 0 invalid, change freq to 10 Hz");
+    ROS_DEBUG_STREAM("negative freq is " << pubFreq << " Hz");
+    pubFreq = 10.0;
+  }
+  ROS_INFO_STREAM("publish at rate " << pubFreq << " Hz");
+  ros::Rate loop_rate(pubFreq);
 
 
   int count = 0;
