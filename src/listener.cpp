@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
   ros::Subscriber listener_sub = n.subscribe("chatter", 1000, chatterCallback);
 
   if (listener_sub) {
-    ROS_INFO_STREAM("listener subscribing correctly");
+    ROS_DEBUG_STREAM("listener subscribing correctly");
   } else {
     ROS_FATAL_STREAM("listener not subscribing correctly");
     return 1;

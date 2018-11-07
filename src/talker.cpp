@@ -36,7 +36,7 @@ bool pubNewLine(beginner_tutorials::pubNewLine::Request &req,
 {
   res.inLine = req.outLine;
   line = req.outLine;
-  ROS_INFO("publishing new line");
+  ROS_WARN_STREAM("publishing new line");
   return true;
 }
 
@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
 
   ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
   if (chatter_pub) {
-    ROS_INFO_STREAM("chatter publishing correctly");
+    ROS_DEBUG_STREAM("chatter publishing correctly");
   } else {
     ROS_FATAL_STREAM("chatter not publishing correctly");
     return 1;
@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
 
   ros::ServiceServer service = n.advertiseService("pub_New_Line", pubNewLine);
   if (service) {
-    ROS_INFO_STREAM("service working correctly");
+    ROS_DEBUG_STREAM("service working correctly");
   } else {
     ROS_FATAL_STREAM("service not working correctly");
     return 1;
@@ -77,7 +77,7 @@ int main(int argc, char **argv) {
 
   if (pubFreq <= 0.0) {
     ROS_ERROR_STREAM("freq <= 0 invalid, change freq to 10 Hz");
-    ROS_DEBUG_STREAM("negative freq is " << pubFreq << " Hz");
+    ROS_ERROR_STREAM("negative freq is " << pubFreq << " Hz");
     pubFreq = 10.0;
   }
   ROS_INFO_STREAM("publish at rate " << pubFreq << " Hz");
@@ -94,6 +94,7 @@ int main(int argc, char **argv) {
     msg.data = ss.str();
 
     ROS_INFO("%s", msg.data.c_str());
+    ROS_DEBUG_STREAM("currently publish at rate " << pubFreq << " Hz");
 
     chatter_pub.publish(msg);
 
