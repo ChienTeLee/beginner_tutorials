@@ -49,6 +49,8 @@ IN THE SOFTWARE.
 $ mkdir -p ~/catkin_ws/src
 $ cd ~/catkin_ws/src
 $ git clone --recursive https://github.com/ChienTeLee/beginner_tutorials.git
+$ cd beginner_tutorials
+$ git checkout Week10_HW
 $ cd ~/catkin_ws
 $ catkin_make
 ```
