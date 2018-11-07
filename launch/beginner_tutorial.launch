@@ -1,0 +1,9 @@
+<launch>
+
+  <arg name="pubFreq"/>
+
+  <node pkg="beginner_tutorials" type="talker" name="talker" output="screen" args="$(arg pubFreq)"/>
+
+  <node pkg="beginner_tutorials" type="listener" name="listener" output="screen" launch-prefix="gnome-terminal --command"/>
+
+</launch>
