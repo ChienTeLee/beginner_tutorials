@@ -22,20 +22,39 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/** @file listener.cpp
+ *  @brief Implementation of listener node
+ *  @copyright (c) 2018 Chien-Te Lee
+ *  @author Chien-Te Lee
+ *  @date   11/6/2018
+ *
+ *  This program implemnts listener node and output content received from talker
+ *  
+ */
+
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 
+
+/**
+ *  @brief This is a fucntion to output the received content
+ *  @param msg is the received content
+ *  @return none
+ */
 void chatterCallback(const std_msgs::String::ConstPtr& msg) {
   ROS_INFO("Listener received: [%s]", msg->data.c_str());
 }
 
+/**
+ *  @brief the pipeline of creating listener node
+ *  @param argc is the number of input argument
+ *  @param argv are the input arguments
+ *  @return if the progran executes successfully
+ */
 int main(int argc, char **argv) {
-
   ros::init(argc, argv, "listener");
 
-
   ros::NodeHandle n;
-
 
   ros::Subscriber listener_sub = n.subscribe("chatter", 1000, chatterCallback);
 

@@ -22,6 +22,17 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/** @file talker.cpp
+ *  @brief Implementation of talker node
+ *  @copyright (c) 2018 Chien-Te Lee
+ *  @author Chien-Te Lee
+ *  @date   11/6/2018
+ *
+ *  This program implemnts talker node to publish content, and implements service to change the publishing content.
+ *  
+ */
+
+
 #include <sstream>
 #include <string>
 #include "ros/ros.h"
@@ -30,24 +41,33 @@
 
 std::string line = "It is rainy today.";
 
-
+/**
+ *  @brief This is a fucntion to change publishing content
+ *  @param req is the string of input argument
+ *  @param res is the output response
+ *  @return true if the publishing content correctly changed
+ */
 bool pubNewLine(beginner_tutorials::pubNewLine::Request &req,
-                beginner_tutorials::pubNewLine::Response &res)
-{
-  res.inLine = req.outLine;
-  line = req.outLine;
+                beginner_tutorials::pubNewLine::Response &res) {
+  res.outLine = req.inLine;
+  line = res.outLine;
   ROS_WARN_STREAM("publishing new line");
   return true;
 }
 
+/**
+ *  @brief the pipeline of creating talker node and service
+ *  @param argc is the number of input argument
+ *  @param argv are the input arguments
+ *  @return if the progran executes successfully
+ */
 
 int main(int argc, char **argv) {
-
-  
   ros::init(argc, argv, "talker");
 
   ros::NodeHandle n;
 
+  // creater chatter
   ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
   if (chatter_pub) {
     ROS_DEBUG_STREAM("chatter publishing correctly");
@@ -56,7 +76,7 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-
+  // create service
   ros::ServiceServer service = n.advertiseService("pub_New_Line", pubNewLine);
   if (service) {
     ROS_DEBUG_STREAM("service working correctly");
@@ -65,12 +85,11 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-
+  // check if publish frequency is correct
   double pubFreq = 10.0;
   if (argc == 2) {
     pubFreq = std::stod(argv[1]);
-  }
-  else if (argc > 2){
+  } else if (argc > 2) {
     ROS_WARN_STREAM("too much argument number, change freq to 10 Hz");
     pubFreq = 10.0;
   }
@@ -86,7 +105,6 @@ int main(int argc, char **argv) {
 
   int count = 0;
   while (ros::ok()) {
-
     std_msgs::String msg;
 
     std::stringstream ss;
