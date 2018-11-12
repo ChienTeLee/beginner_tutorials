@@ -1,10 +1,13 @@
 ## Overview
 This repository is a simple ROS package created following ROS wiki tutorials. This project walks through:
-- creating and building a beginner tutorial package
-- writing a simple publisher (talker)
-- writing a simple subscriber (listener)
+- creating one service in talker node
+- use five logging levels of severity
+- create a launch file to modify publish frequency
 
-The publisher node keeps publishing a custom string message on a topic. The subscriber keeps printing out the received message through the topic.
+The publisher node keeps publishing a custom string message on a topic.
+The subscriber keeps printing out the received message through the topic.
+The service can change the publishing content.
+The launchfile can change the publishing frequency.
 
 ROS wiki tutorials: http://wiki.ros.org/ROS/Tutorials
 
@@ -38,7 +41,7 @@ IN THE SOFTWARE.
 - CMake
 - ROS kinetic
 
-## Standard install via command-line
+## Standard install using command-line
 - create catkin workspace
 - clone beginner tutorial package into catkin workspace
 - build catkin workspace
@@ -46,21 +49,23 @@ IN THE SOFTWARE.
 $ mkdir -p ~/catkin_ws/src
 $ cd ~/catkin_ws/src
 $ git clone --recursive https://github.com/ChienTeLee/beginner_tutorials.git
+$ cd beginner_tutorials
+$ git checkout Week10_HW
 $ cd ~/catkin_ws
 $ catkin_make
 ```
 
-## How to run program
+## How to run program using command line
 - run ros master on first terminal
 ```
 $ roscore
 ```
 
-- run publisher on second terminal
+- run publisher on second terminal to publish at frequency of 5.5 Hz
 ```
 $ cd ~/catkin_ws
 $ source ./devel/setup.bash
-$ rosrun beginner_tutorials talker
+$ rosrun beginner_tutorials talker 5.5
 ```
 
 - run subscriber on third terminal
@@ -70,7 +75,33 @@ $ source ./devel/setup.bash
 $ rosrun beginner_tutorials listener
 ```
 
+- run service to change publishing content
+```
+$ cd ~/catkin_ws
+$ source ./devel/setup.bash
+$ rosservice call /pub_New_Line "It is sunny now."
+```
 
+
+## How to run program using launch file
+- run ros master on first terminal
+```
+$ roscore
+```
+
+- run launch file to publish at frequncy of 5.5 Hz
+```
+$ cd ~/catkin_ws
+$ source ./devel/setup.bash
+$ roslaunch beginner_tutorials beginner_tutorial.launch pubFreq:=5.5
+```
+
+- run service to change publishing content
+```
+$ cd ~/catkin_ws
+$ source ./devel/setup.bash
+$ rosservice call /pub_New_Line "It is sunny now."
+```
 
 
 
