@@ -35,7 +35,9 @@
 
 #include <sstream>
 #include <string>
-#include "ros/ros.h"
+#include <math.h>
+#include <ros/ros.h>
+#include <tf/transform_broadcaster.h>
 #include "std_msgs/String.h"
 #include "beginner_tutorials/pubNewLine.h"
 
@@ -54,6 +56,7 @@ bool pubNewLine(beginner_tutorials::pubNewLine::Request &req,
   ROS_WARN_STREAM("publishing new line");
   return true;
 }
+
 
 /**
  *  @brief the pipeline of creating talker node and service
@@ -103,6 +106,15 @@ int main(int argc, char **argv) {
   ros::Rate loop_rate(pubFreq);
 
 
+  // create Tf
+  tf::TransformBroadcaster br;
+  tf::Transform transform;
+  transform.setOrigin( tf::Vector3(7.0, 5.0, 10.0) );
+  tf::Quaternion q;
+  q.setRPY(M_PI/6, M_PI/3, M_PI/2);
+  transform.setRotation(q);
+
+
   int count = 0;
   while (ros::ok()) {
     std_msgs::String msg;
@@ -115,6 +127,10 @@ int main(int argc, char **argv) {
     ROS_DEBUG_STREAM("currently publish at rate " << pubFreq << " Hz");
 
     chatter_pub.publish(msg);
+
+    // broadcast Tf
+    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "talk"));
+
 
     ros::spinOnce();
 
