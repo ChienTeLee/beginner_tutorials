@@ -42,10 +42,10 @@
  *  @param testcase1 is the name of the testcase
  *  @return none
  */
-TEST(TESTSuite, testcase1)
-{
+TEST(TESTSuite, testcase1) {
   ros::NodeHandle nh;
-  ros::ServiceClient client = nh.serviceClient<beginner_tutorials::pubNewLine>("pub_New_Line");
+  ros::ServiceClient client = nh.serviceClient<beginner_tutorials::pubNewLine>
+                              ("pub_New_Line");
   bool exists(client.waitForExistence(ros::Duration(1)));
   EXPECT_TRUE(exists);
 }

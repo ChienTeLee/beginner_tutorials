@@ -34,11 +34,11 @@
  */
 
 
-#include <sstream>
-#include <string>
 #include <math.h>
 #include <ros/ros.h>
 #include <tf/transform_broadcaster.h>
+#include <sstream>
+#include <string>
 #include "std_msgs/String.h"
 #include "beginner_tutorials/pubNewLine.h"
 
@@ -110,7 +110,7 @@ int main(int argc, char **argv) {
   // create Tf transform and do traslation and rotation
   tf::TransformBroadcaster br;
   tf::Transform transform;
-  transform.setOrigin( tf::Vector3(7.0, 5.0, 10.0) );
+  transform.setOrigin(tf::Vector3(7.0, 5.0, 10.0));
   tf::Quaternion q;
   q.setRPY(M_PI/6, M_PI/3, M_PI/2);
   transform.setRotation(q);
@@ -130,7 +130,8 @@ int main(int argc, char **argv) {
     chatter_pub.publish(msg);
 
     // broadcast Tf frame
-    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "talk"));
+    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(),
+                     "world", "talk"));
 
 
     ros::spinOnce();
