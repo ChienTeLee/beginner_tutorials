@@ -1,13 +1,19 @@
 ## Overview
 This repository is a simple ROS package created following ROS wiki tutorials. This project walks through:
-- creating one service in talker node
+- create pulisher node talker and subscriber node listener
+- create one service in talker node to change publishing line
 - use five logging levels of severity
 - create a launch file to modify publish frequency
+- create transformbroadcaster in talker node to broadcast tf frame
+- create gtest/rostest to test service
+- extend launch file to enable rosbag recording
 
-The publisher node keeps publishing a custom string message on a topic.
-The subscriber keeps printing out the received message through the topic.
-The service can change the publishing content.
+The talker node keeps publishing a custom string message on a topic.
+The listener node keeps printing out the received message through the topic.
+The service in talker can change the publishing content.
 The launchfile can change the publishing frequency.
+The transformbroadcaster in talker keeps broadcasting its talker frame respect to world.
+The launchfile is extended to use extra argument to enable rosbag recording
 
 ROS wiki tutorials: http://wiki.ros.org/ROS/Tutorials
 
@@ -40,6 +46,7 @@ IN THE SOFTWARE.
 - Ubuntu 16.04
 - CMake
 - ROS kinetic
+- gtest
 
 ## Standard install using command-line
 - create catkin workspace
@@ -50,7 +57,7 @@ $ mkdir -p ~/catkin_ws/src
 $ cd ~/catkin_ws/src
 $ git clone --recursive https://github.com/ChienTeLee/beginner_tutorials.git
 $ cd beginner_tutorials
-$ git checkout Week10_HW
+$ git checkout Week11_HW
 $ cd ~/catkin_ws
 $ catkin_make
 ```
@@ -75,7 +82,7 @@ $ source ./devel/setup.bash
 $ rosrun beginner_tutorials listener
 ```
 
-- run service to change publishing content
+- run service on fourth terminal to change publishing content
 ```
 $ cd ~/catkin_ws
 $ source ./devel/setup.bash
@@ -84,24 +91,73 @@ $ rosservice call /pub_New_Line "It is sunny now."
 
 
 ## How to run program using launch file
-- run ros master on first terminal
-```
-$ roscore
-```
-
-- run launch file to publish at frequncy of 5.5 Hz
+- run launch file on first terminal to publish at frequncy of 5.5 Hz
 ```
 $ cd ~/catkin_ws
 $ source ./devel/setup.bash
 $ roslaunch beginner_tutorials beginner_tutorial.launch pubFreq:=5.5
 ```
 
-- run service to change publishing content
+- run service on second terminal to change publishing content
 ```
 $ cd ~/catkin_ws
 $ source ./devel/setup.bash
 $ rosservice call /pub_New_Line "It is sunny now."
 ```
 
+## How to check tf frame
+- run ros master on first terminal
+```
+$ roscore
+```
+
+- run publisher on second terminal to publish at frequency of 5.5 Hz
+```
+$ cd ~/catkin_ws
+$ source ./devel/setup.bash
+$ rosrun beginner_tutorials talker 5.5
+```
+
+- run tf_echo on third terminal to check tf frame
+```
+$ cd ~/catkin_ws
+$ source ./devel/setup.bash
+$ rosrun tf tf_echo
+```
+
+## How to run gtest
+```
+$ cd ~/catkin_ws
+$ catkin_make run_tests
+```
+
+## How to enable rosbag in launchfile
+- run launch file on first terminal to publish at frequncy of 5.5 Hz and enabel rosbag
+```
+$ cd ~/catkin_ws
+$ source ./devel/setup.bash
+$ roslaunch beginner_tutorials beginner_tutorial.launch pubFreq:=5.5 record:=true
+```
+
+## How to replay rosbag record
+- run ros master on first terminal
+```
+$ roscore
+```
+
+- run subscriber on second terminal
+```
+$ cd ~/catkin_ws
+$ source ./devel/setup.bash
+$ rosrun beginner_tutorials listener
+```
+
+- play rosbag on third terminal
+```
+$ cd ~/catkin_ws
+$ source ./devel/setup.bash
+$ cd ~/catkin_ws/src/beginner_tutorials/result
+$ rosbag play talker_record.bag
+```
 
 
