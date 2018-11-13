@@ -28,7 +28,8 @@
  *  @author Chien-Te Lee
  *  @date   11/6/2018
  *
- *  This program implemnts talker node to publish content, and implements service to change the publishing content.
+ *  This program implemnts talker node to publish content, service to change the publishing content, and TransformBroadcaster to
+ *  broadcast TF frame.
  *  
  */
 
@@ -59,7 +60,7 @@ bool pubNewLine(beginner_tutorials::pubNewLine::Request &req,
 
 
 /**
- *  @brief the pipeline of creating talker node and service
+ *  @brief the pipeline of creating talker node, change line service, and Tf broadcaster
  *  @param argc is the number of input argument
  *  @param argv are the input arguments
  *  @return if the progran executes successfully
@@ -106,7 +107,7 @@ int main(int argc, char **argv) {
   ros::Rate loop_rate(pubFreq);
 
 
-  // create Tf
+  // create Tf transform and do traslation and rotation
   tf::TransformBroadcaster br;
   tf::Transform transform;
   transform.setOrigin( tf::Vector3(7.0, 5.0, 10.0) );
@@ -128,7 +129,7 @@ int main(int argc, char **argv) {
 
     chatter_pub.publish(msg);
 
-    // broadcast Tf
+    // broadcast Tf frame
     br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "talk"));
 
 
