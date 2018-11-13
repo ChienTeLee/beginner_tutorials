@@ -1,9 +1,12 @@
 <launch>
 
   <arg name="pubFreq"/>
+  <arg name="record" default="false" />
 
   <node pkg="beginner_tutorials" type="talker" name="talker" output="screen" args="$(arg pubFreq)"/>
 
   <node pkg="beginner_tutorials" type="listener" name="listener" output="screen" launch-prefix="gnome-terminal --command"/>
+
+  <node pkg="rosbag" type="record" name="rosbag_record" args="-a -O $(find beginner_tutorials)/result/talker_record.bag" if="$(arg record)" />
 
 </launch>
